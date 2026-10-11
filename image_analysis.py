@@ -42,19 +42,28 @@ print("Image:", image_path.name)
 print("Dimensions:", image_array.shape)
 print("Data type:", image_array.dtype)
 
-plt.figure(figsize=(12, 5))
+# Increase contrast by 50%
+contrast_factor = 1.5
 
-# Original X-ray
+contrast_image = np.clip(
+    (image_array.astype(np.float32) - 128)
+    * contrast_factor + 128,
+    0,
+    255
+).astype(np.uint8)
+
+plt.figure(figsize=(12, 5))
+# Display original image
 plt.subplot(1, 2, 1)
 plt.imshow(image_array, cmap="gray", vmin=0, vmax=255)
 plt.title("Original X-ray")
 plt.axis("off")
-
-# Brightened X-ray
+# Display the contrast-increased image
 plt.subplot(1, 2, 2)
-plt.imshow(bright_image, cmap="gray", vmin=0, vmax=255)
-plt.title("Brightness +50")
+plt.imshow(contrast_image, cmap="gray", vmin=0, vmax=255)
+plt.title("Contrast Increased (1.5x)")
 plt.axis("off")
 
 plt.tight_layout()
 plt.show()
+
